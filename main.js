@@ -2,7 +2,7 @@ const { app, BrowserWindow, Menu } = require("electron")
 const path = require("path")
 
 const isWindows = process.platform !== "darwin"
-const isDev = process.env.NODE_ENV !== "production"
+const isDev = true
 
 const menu = [
   {
@@ -34,20 +34,29 @@ const menu = [
   {
     label: "Help",
     submenu: [
-      {role: "about"}
+      {
+        label: "About",
+        role: "about"
+      }
     ]
   },
 ]
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
-    width: !isDev? 800 : 1000,
+    icon: path.join(__dirname, "./renderer/assets/icon.png"),
+    width: isDev? 1000: 800,
     height: 600,
-    icon: path.join(__dirname, "./renderer/assets/icon.png")
+    minWidth: 700,
+    minHeight: 500,
+    webPreferences: {
+      contextIsolation: true,
+      nodeIntegration: true,
+      preload: path.join(__dirname, "./preload.js")
+    },
   })
   
   if (isDev) mainWindow.webContents.openDevTools()
-
   mainWindow.loadFile(path.join(__dirname, "./renderer/pages/index.html"))
 }
 
@@ -56,6 +65,12 @@ app.whenReady().then(() => {
 
   const mainMenu = Menu.buildFromTemplate(menu)
   Menu.setApplicationMenu(mainMenu)
+
+  app.setAboutPanelOptions({
+    applicationName: "Image Resizer",
+    applicationVersion : "Version: 1.0.0",
+    copyright: "Created By: Moataz Ghazy"
+  })
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
