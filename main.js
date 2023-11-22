@@ -34,9 +34,7 @@ const menu = [
   {
     label: "Help",
     submenu: [
-      {
-        label: "About"
-      }
+      {role: "about"}
     ]
   },
 ]
@@ -45,12 +43,12 @@ function createWindow() {
   const mainWindow = new BrowserWindow({
     width: !isDev? 800 : 1000,
     height: 600,
-    icon: path.join(__dirname, "./renderer/icon.png")
+    icon: path.join(__dirname, "./renderer/assets/icon.png")
   })
   
   if (isDev) mainWindow.webContents.openDevTools()
 
-  mainWindow.loadFile(path.join(__dirname, "./renderer/index.html"))
+  mainWindow.loadFile(path.join(__dirname, "./renderer/pages/index.html"))
 }
 
 app.whenReady().then(() => {

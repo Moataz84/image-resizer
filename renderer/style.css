@@ -1,7 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+
 * {
   margin: 0;
   padding: 0;
+  font-family: 'Open Sans', sans-serif;
 }
 
-p {
+nav {
+  background-color: #f1f1f1;
+}
+
+.titlebar {
+  display: flex;
+  gap: 6px;
+  padding: 5px 7px;
+}
+
+.titlebar img {
+  width: 17px;
+  height: 17px;
+}
+
+.titlebar > p {
+  font-size: 12px;
+  font-weight: 500;
+  flex: 1;
 }
