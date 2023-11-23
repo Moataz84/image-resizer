@@ -3,6 +3,7 @@ const path = require("path")
 
 const isWindows = process.platform !== "darwin"
 const isDev = true
+let window
 
 const menu = [
   {
@@ -53,9 +54,10 @@ function createWindow() {
       contextIsolation: true,
       nodeIntegration: true,
       preload: path.join(__dirname, "./preload.js")
-    },
+    }
   })
   
+  window = mainWindow
   if (isDev) mainWindow.webContents.openDevTools()
   mainWindow.loadFile(path.join(__dirname, "./renderer/pages/index.html"))
 }
