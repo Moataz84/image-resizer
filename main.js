@@ -2,7 +2,7 @@ const { app, BrowserWindow, Menu } = require("electron")
 const path = require("path")
 
 const isWindows = process.platform !== "darwin"
-const isDev = false
+const isDev = true
 
 const menu = [
   {
