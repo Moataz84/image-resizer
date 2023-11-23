@@ -2,7 +2,7 @@ const { app, BrowserWindow, Menu } = require("electron")
 const path = require("path")
 
 const isWindows = process.platform !== "darwin"
-const isDev = true
+const isDev = false
 
 const menu = [
   {
@@ -69,7 +69,7 @@ app.whenReady().then(() => {
   app.setAboutPanelOptions({
     applicationName: "Image Resizer",
     applicationVersion : "Version: 1.0.0",
-    copyright: "Created By: Moataz Ghazy"
+    credits: "Created By: Moataz Ghazy"
   })
 
   app.on("activate", () => {
