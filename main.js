@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu } = require("electron")
+const { app, BrowserWindow, Menu, ipcMain } = require("electron")
 const path = require("path")
 
 const isWindows = process.platform !== "darwin"
@@ -59,7 +59,7 @@ function createWindow() {
   
   window = mainWindow
   if (isDev) mainWindow.webContents.openDevTools()
-  mainWindow.loadFile(path.join(__dirname, "./renderer/pages/index.html"))
+  window.loadFile(path.join(__dirname, "./renderer/pages/index.html"))
 }
 
 app.whenReady().then(() => {
@@ -81,4 +81,8 @@ app.whenReady().then(() => {
 
 app.on("window-all-closed", () => {
   if (isWindows) app.quit()
+})
+
+ipcMain.on("photo:selected", (e, dataURL) => {
+  window.webContents.send("photo:data", dataURL)
 })

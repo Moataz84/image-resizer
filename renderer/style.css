@@ -54,3 +54,8 @@
   color: #8c0c0c;
   margin: 10px auto 0;
 }
+
+.edit img {
+  width: 95%;
+  height: 80vh;
+}
