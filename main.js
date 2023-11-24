@@ -83,6 +83,10 @@ app.on("window-all-closed", () => {
   if (isWindows) app.quit()
 })
 
-ipcMain.on("photo:selected", (e, dataURL) => {
-  window.webContents.send("photo:data", dataURL)
+ipcMain.on("photo-selected", (e, dataURL) => {
+  window.loadFile(path.join(__dirname, "./renderer/pages/edit.html"), {query: {dataURL}})
+})
+
+ipcMain.on("cancel", () => {
+  window.loadFile(path.join(__dirname, "./renderer/pages/index.html"))
 })

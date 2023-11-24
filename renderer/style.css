@@ -10,14 +10,15 @@
   width: 100%;
   height: 100vh;
   background-color: #14a4d0;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   justify-content: center;
-  align-items: center;
 }
 
 .image-upload {
   width: fit-content;
+  align-self: center;
+  justify-self: center;
 }
 
 .image-upload input {
@@ -55,7 +56,26 @@
   margin: 10px auto 0;
 }
 
+.edit {
+  height: calc(100vh - 80px);
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 20px;
+  padding: 40px;
+}
+
+.edit .img-wrapper {
+  display: flex;
+  justify-self: center;
+  align-self: center;
+}
+
 .edit img {
-  width: 95%;
-  height: 80vh;
+  max-width: 100%;
+  max-height: calc(100vh - 122px);
+}
+
+.edit .btns {
+  width: fit-content;
+  justify-self: end;
 }
