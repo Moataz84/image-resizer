@@ -81,3 +81,11 @@
   width: fit-content;
   justify-self: end;
 }
+
+.edit .resizable {
+  resize: both;
+  position: absolute;
+  overflow: auto;
+  border: 2px solid #ccc;
+  background-color: #ffffff00;
+}

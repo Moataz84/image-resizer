@@ -18,6 +18,14 @@ if (document.querySelector(".image-upload")) {
 
 if (document.querySelector(".edit")) {
   const dataURL = new URLSearchParams(location.search).get("dataURL")
-  document.querySelector("img").src = dataURL
+  const img = document.querySelector("img")
+  const resizable = document.querySelector(".resizable")
+  img.src = dataURL
+  const observer = new ResizeObserver(() => {
+    const { width, height } = img.getBoundingClientRect()
+    resizable.style.width = resizable.style.maxWidth = `${width - 4}px`
+    resizable.style.height = resizable.style.maxHeight = `${height - 4}px`
+  })
+  observer.observe(img)
   document.querySelector(".cancel").addEventListener("click", () => ipc.send("cancel"))
 }
