@@ -31,6 +31,7 @@ if (document.querySelector(".edit")) {
   img.src = dataURL
   
   img.onload = () => {
+    /* Loading Image and Setting Dimensions */
     const { width, height } = img.getBoundingClientRect()
     w = width - 2
     h = height - 2
@@ -47,22 +48,29 @@ if (document.querySelector(".edit")) {
     })
     observer.observe(img)
 
+    /* Moving Image Selector */
+    let offsetX, offsetY = 0
     let isEntered = false
 
-    resizable.addEventListener("mousedown", () => isEntered = true)
-    resizable.addEventListener("mouseup", () => isEntered = false)
+    function move(e) {
+      if (!isEntered) return
+      resizable.style.left = `${e.clientX - offsetX}px`
+      resizable.style.top = `${e.clientY - offsetY}px`
+    }
+    
+    resizable.addEventListener("mousedown", e => {
+      isEntered = true
+      offsetX = e.clientX - resizable.offsetLeft
+      offsetY = e.clientY - resizable.offsetTop
+      document.addEventListener("mousemove", move)
+    })
+    document.addEventListener("mouseup", () => document.removeEventListener("mousemove", move))
+    
     const resizeObserver = new ResizeObserver(() => isEntered = false)
     resizeObserver.observe(resizable)
-
-    resizable.addEventListener("mousemove", e => {
-      const { x, y } = resizable.getBoundingClientRect()
-      if (isEntered) {
-        resizable.style.left = `${x}px`
-        resizable.style.left = `${y}px`
-      }
-    })
   }
 
+  /* Button Functions */
   document.querySelector(".cancel").addEventListener("click", () => ipc.send("cancel"))
 
 }
