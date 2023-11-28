@@ -16,11 +16,11 @@ if (document.querySelector(".image-upload")) {
   })
 }
 
-function setDimensions(elem, width, height, setMax = true) {
-  if (setMax) elem.style.width = `${width - 4}px`
-  elem.style.maxWidth = `${width - 4}px`
-  if (setMax) elem.style.height = `${height - 4}px`
-  elem.style.maxHeight = `${height - 4}px`
+function setDimensions(elem, width, maxWidth, height, maxHeight) {
+  elem.style.width = `${width}px`
+  elem.style.maxWidth = `${maxWidth}px`
+  elem.style.height = `${height}px`
+  elem.style.maxHeight = `${maxHeight}px`
 }
 
 if (document.querySelector(".edit")) {
@@ -30,19 +30,23 @@ if (document.querySelector(".edit")) {
   const resizable = document.querySelector(".resizable")
   img.src = dataURL
   
-  const { width, height } = img.getBoundingClientRect()
-  w = width
-  h = height
-  setDimensions(resizable, width, height)
-
-  const observer = new ResizeObserver(() => {
+  img.onload = () => {
     const { width, height } = img.getBoundingClientRect()
-    const wRatio = width / w
-    const hRatio = height / h
-    setDimensions(resizable, (wRatio * w), (hRatio * h), false)
-    w = width
-    h = height
-  })
-  observer.observe(img)
-  document.querySelector(".cancel").addEventListener("click", () => ipc.send("cancel"))
+    w = width - 2
+    h = height - 2
+    setDimensions(resizable, w, w, h, h)
+  
+    const observer = new ResizeObserver(() => {
+      const { width: maxWidth, height: maxHeight } = img.getBoundingClientRect()
+      const { width, height } = resizable.getBoundingClientRect()
+      const wRatio = (maxWidth - 2) / w
+      const hRatio = (maxHeight - 2) / h
+      setDimensions(resizable, width * wRatio, maxWidth - 2, height * hRatio, maxHeight - 2)
+      w = maxWidth
+      h = maxHeight
+    })
+    observer.observe(img)
+
+    document.querySelector(".cancel").addEventListener("click", () => ipc.send("cancel"))
+  }
 }
