@@ -16,15 +16,32 @@ if (document.querySelector(".image-upload")) {
   })
 }
 
+function setDimensions(elem, width, height, setMax = true) {
+  if (setMax) elem.style.width = `${width - 4}px`
+  elem.style.maxWidth = `${width - 4}px`
+  if (setMax) elem.style.height = `${height - 4}px`
+  elem.style.maxHeight = `${height - 4}px`
+}
+
 if (document.querySelector(".edit")) {
+  let w, h = 0
   const dataURL = new URLSearchParams(location.search).get("dataURL")
   const img = document.querySelector("img")
   const resizable = document.querySelector(".resizable")
   img.src = dataURL
+  
+  const { width, height } = img.getBoundingClientRect()
+  w = width
+  h = height
+  setDimensions(resizable, width, height)
+
   const observer = new ResizeObserver(() => {
     const { width, height } = img.getBoundingClientRect()
-    resizable.style.width = resizable.style.maxWidth = `${width - 4}px`
-    resizable.style.height = resizable.style.maxHeight = `${height - 4}px`
+    const wRatio = width / w
+    const hRatio = height / h
+    setDimensions(resizable, (wRatio * w), (hRatio * h), false)
+    w = width
+    h = height
   })
   observer.observe(img)
   document.querySelector(".cancel").addEventListener("click", () => ipc.send("cancel"))

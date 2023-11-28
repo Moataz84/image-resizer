@@ -58,6 +58,7 @@
 
 .edit {
   height: calc(100vh - 80px);
+  max-height: calc(100vh - 80px);
   display: grid;
   grid-template-rows: auto 1fr;
   gap: 20px;
@@ -74,12 +75,24 @@
 
 .edit img {
   max-width: 100%;
-  max-height: calc(100vh - 122px);
+  max-height: calc(100vh - 140px);
 }
 
 .edit .btns {
   width: fit-content;
   justify-self: end;
+  display: flex;
+  gap: 10px;
+}
+
+.btns button {
+  outline: none;
+  border: 1px solid #ccc;
+  padding: 7px 10px;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: #ffffff00;
 }
 
 .edit .resizable {
