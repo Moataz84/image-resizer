@@ -101,4 +101,6 @@
   overflow: auto;
   border: 2px solid #ccc;
   background-color: #ffffff00;
+  cursor: all-scroll;
+  z-index: 2;
 }

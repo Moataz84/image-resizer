@@ -47,6 +47,22 @@ if (document.querySelector(".edit")) {
     })
     observer.observe(img)
 
-    document.querySelector(".cancel").addEventListener("click", () => ipc.send("cancel"))
+    let isEntered = false
+
+    resizable.addEventListener("mousedown", () => isEntered = true)
+    resizable.addEventListener("mouseup", () => isEntered = false)
+    const resizeObserver = new ResizeObserver(() => isEntered = false)
+    resizeObserver.observe(resizable)
+
+    resizable.addEventListener("mousemove", e => {
+      const { x, y } = resizable.getBoundingClientRect()
+      if (isEntered) {
+        resizable.style.left = `${x}px`
+        resizable.style.left = `${y}px`
+      }
+    })
   }
+
+  document.querySelector(".cancel").addEventListener("click", () => ipc.send("cancel"))
+
 }
