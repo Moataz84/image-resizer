@@ -13,8 +13,5 @@
   "devDependencies": {
     "electron": "^27.1.0",
     "electronmon": "^2.0.2"
-  },
-  "dependencies": {
-    "croppr": "^2.3.1"
   }
 }
