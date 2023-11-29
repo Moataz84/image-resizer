@@ -16,40 +16,24 @@ if (document.querySelector(".image-upload")) {
   })
 }
 
-function setDimensions(elem, width, maxWidth, height, maxHeight) {
-  elem.style.width = `${width}px`
-  elem.style.maxWidth = `${maxWidth}px`
-  elem.style.height = `${height}px`
-  elem.style.maxHeight = `${maxHeight}px`
-}
-
 if (document.querySelector(".edit")) {
-  let w, h = 0
   const dataURL = new URLSearchParams(location.search).get("dataURL")
-  const img = document.querySelector("img")
-  const resizable = document.querySelector(".resizable")
+  const img = document.querySelector("#croppr")
   img.src = dataURL
   
   img.onload = () => {
-    /* Loading Image and Setting Dimensions */
-    const { width, height } = img.getBoundingClientRect()
-    w = width - 2
-    h = height - 2
-    setDimensions(resizable, w, w, h, h)
-  
-    const observer = new ResizeObserver(() => {
-      const { width: maxWidth, height: maxHeight } = img.getBoundingClientRect()
-      const { width, height } = resizable.getBoundingClientRect()
-      const wRatio = (maxWidth - 2) / w
-      const hRatio = (maxHeight - 2) / h
-      setDimensions(resizable, width * wRatio, maxWidth - 2, height * hRatio, maxHeight - 2)
-      w = maxWidth
-      h = maxHeight
+    const cropInstance = new Croppr("#croppr", {
+      returnMode: "raw"
     })
-    observer.observe(img)
 
-    /* Resizing Image */
-    makeResizableDiv(".resizable")
+    const clippedImage = document.querySelector(".croppr-imageClipped")
+
+    const observer = new ResizeObserver(() => {
+      const { width: cWidth } = cropInstance.getValue()
+      const { width } = clippedImage.getBoundingClientRect()
+      cropInstance.scaleBy(width / cWidth, [0, 0])  
+    })
+    observer.observe(clippedImage)
   }
 
   /* Button Functions */

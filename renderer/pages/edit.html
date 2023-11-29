@@ -6,7 +6,8 @@
   <meta http-equiv="Content-Security-Policy" content="script-src 'self'">
   <link rel="stylesheet" href="../style.css">
   <script src="../renderer.js" defer></script>
-  <script src="../resize.js" defer></script>
+  <link rel="stylesheet" href="../../node_modules/croppr/dist/croppr.min.css">
+  <script src="../../node_modules/croppr/dist/croppr.min.js" defer></script>
 </head>
 <body>
   <div class="container">
@@ -16,15 +17,7 @@
         <button class="cancel">Cancel</button>
       </div>
       <div class="img-wrapper">
-        <img>
-        <div class="resizable">
-          <div class="resizers">
-            <div class="resizer top-left"></div>
-            <div class="resizer top-right"></div>
-            <div class="resizer bottom-left"></div>
-            <div class="resizer bottom-right"></div>
-          </div>
-        </div>
+        <img id="croppr">
       </div>
     </div>
   </div>

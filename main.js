@@ -2,7 +2,7 @@ const { app, BrowserWindow, Menu, ipcMain } = require("electron")
 const path = require("path")
 
 const isWindows = process.platform !== "darwin"
-const isDev = true
+const isDev = false
 let window
 
 const menu = [
