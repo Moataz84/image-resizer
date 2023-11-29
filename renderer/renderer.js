@@ -18,25 +18,31 @@ if (document.querySelector(".image-upload")) {
 
 if (document.querySelector(".edit")) {
   const dataURL = new URLSearchParams(location.search).get("dataURL")
-
   const img = document.querySelector("img")
   img.src = dataURL
 
-  // https://github.com/fengyuanchen/cropperjs
   img.onload = () => {
+    // https://github.com/fengyuanchen/cropperjs
     const cropper = new Cropper(img, {
       viewMode: 3,
-      autoCropArea: 1
+      autoCropArea: 1,
+      ready: observe 
     })
+
+    const observer = new ResizeObserver(entries => {
+      const { width: iWidth, height: iHeight } = entries[0].contentRect
+      const { width: cWidth, height: cHeight } = cropper.getCanvasData()
+      //cropper.scale((iWidth / cWidth))
+    })
+
+    function observe() {
+      observer.observe(document.querySelector("img"))
+    }
+
     document.querySelector(".cancel").addEventListener("click", () => ipc.send("cancel"))
     document.querySelector("button").addEventListener("click", () => {
       const dataURL = cropper.getCroppedCanvas().toDataURL()
       console.log(dataURL)
     })
   }
-
-  const observer = new ResizeObserver(() => {
-    console.log(img.width)
-  })
-  observer.observe(document.querySelector("body"))
 }
