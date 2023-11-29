@@ -48,29 +48,10 @@ if (document.querySelector(".edit")) {
     })
     observer.observe(img)
 
-    /* Moving Image Selector */
-    let offsetX, offsetY = 0
-    let isEntered = false
-
-    function move(e) {
-      if (!isEntered) return
-      resizable.style.left = `${e.clientX - offsetX}px`
-      resizable.style.top = `${e.clientY - offsetY}px`
-    }
-    
-    resizable.addEventListener("mousedown", e => {
-      isEntered = true
-      offsetX = e.clientX - resizable.offsetLeft
-      offsetY = e.clientY - resizable.offsetTop
-      document.addEventListener("mousemove", move)
-    })
-    document.addEventListener("mouseup", () => document.removeEventListener("mousemove", move))
-    
-    const resizeObserver = new ResizeObserver(() => isEntered = false)
-    resizeObserver.observe(resizable)
+    /* Resizing Image */
+    makeResizableDiv(".resizable")
   }
 
   /* Button Functions */
   document.querySelector(".cancel").addEventListener("click", () => ipc.send("cancel"))
-
 }
