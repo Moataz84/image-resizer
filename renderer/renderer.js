@@ -34,8 +34,11 @@ if (document.querySelector(".edit")) {
       cropInstance.scaleBy(width / cWidth, [0, 0])  
     })
     observer.observe(clippedImage)
-  }
 
-  /* Button Functions */
-  document.querySelector(".cancel").addEventListener("click", () => ipc.send("cancel"))
+    /* Button Functions */
+    document.querySelector(".cancel").addEventListener("click", () => ipc.send("cancel"))
+    document.querySelector("button").addEventListener("click", () => {
+      console.log(clippedImage);
+    })
+  }
 }
