@@ -21,24 +21,18 @@ if (document.querySelector(".edit")) {
   const img = document.querySelector("img")
   img.src = dataURL
 
-  img.onload = () => {
+  let cropper
+  const observer = new ResizeObserver(() => {
+    if (cropper) cropper.destroy()
     // https://github.com/fengyuanchen/cropperjs
-    const cropper = new Cropper(img, {
+    cropper = new Cropper(img, {
       viewMode: 3,
-      autoCropArea: 1,
-      ready: observe 
+      autoCropArea: 1
     })
+  })
 
-    const observer = new ResizeObserver(entries => {
-      const { width: iWidth, height: iHeight } = entries[0].contentRect
-      const { width: cWidth, height: cHeight } = cropper.getCanvasData()
-      //cropper.scale((iWidth / cWidth))
-    })
-
-    function observe() {
-      observer.observe(document.querySelector("img"))
-    }
-
+  img.onload = () => {
+    observer.observe(img)
     document.querySelector(".cancel").addEventListener("click", () => ipc.send("cancel"))
     document.querySelector("button").addEventListener("click", () => {
       const dataURL = cropper.getCroppedCanvas().toDataURL()
