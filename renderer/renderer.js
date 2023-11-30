@@ -22,50 +22,16 @@ if (document.querySelector(".edit")) {
   img.src = dataURL
 
   img.onload = () => {
-    function cropmove() {
-      const crop = cropper.getCropBoxData()
-      cropW = crop.width
-      cropH = crop.height
-      x = crop.left
-      y = crop.top
-    }
-
-    let cropW, cropH, canvasW, canvasH, x, y
     let cropper = new Cropper(img, {
       viewMode: 3,
-      autoCropArea: 1,
-      cropmove,
-      ready: () => {
-        const crop = cropper.getCropBoxData()
-        cropW = crop.width
-        cropH = crop.height
-        x = crop.left
-        y = crop.top
-
-        const canvas = cropper.getCanvasData()
-        canvasH = canvas.height
-        canvasW = canvas.width
-      }
+      autoCropArea: 1
     })
 
     window.addEventListener("resize", () => {
       cropper.destroy()
       cropper = new Cropper(img, {
         viewMode: 3,
-        autoCropArea: 1,
-        cropmove,
-        ready: () => {
-          const { width, height } = cropper.getCropBoxData()
-          const wRatio = cropW / canvasW
-          const hRatio = cropH / canvasH
-
-          cropper.setCropBoxData({
-            left: x - ((width - cropW) / 2), 
-            top: y - ((height - cropH) / 2), 
-            width: width * wRatio, 
-            height: height * hRatio
-          })
-        }
+        autoCropArea: 1
       })
     })
 
