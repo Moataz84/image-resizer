@@ -21,18 +21,48 @@ if (document.querySelector(".edit")) {
   const img = document.querySelector("img")
   img.src = dataURL
 
-  let cropper
-  const observer = new ResizeObserver(() => {
-    if (cropper) cropper.destroy()
-    // https://github.com/fengyuanchen/cropperjs
-    cropper = new Cropper(img, {
-      viewMode: 3,
-      autoCropArea: 1
-    })
-  })
-
   img.onload = () => {
-    observer.observe(img)
+    let cropW, cropH, canvasW, canvasH, x, y
+    let cropper = new Cropper(img, {
+      viewMode: 2,
+      autoCropArea: 1,
+      ready: () => {
+        const crop = cropper.getCropBoxData()
+        cropW = crop.width
+        cropH = crop.height
+        x = crop.left
+        y = crop.top
+
+        const canvas = cropper.getCanvasData()
+        canvasH = canvas.height
+        canvasW = canvas.width
+      },
+      cropmove: () => {
+        const crop = cropper.getCropBoxData()
+        cropW = crop.width
+        cropH = crop.height
+      }
+    })
+
+    window.addEventListener("resize", () => {
+      cropper.destroy()
+      cropper = new Cropper(img, {
+        viewMode: 2,
+        autoCropArea: 1,
+        ready: () => {
+          const { width, height } = cropper.getCropBoxData()
+          const wRatio = cropW / canvasW
+          const hRatio = cropH / canvasH
+          cropper.setCropBoxData({
+            left: x * wRatio, 
+            top: y * hRatio, 
+            width: width * wRatio, 
+            height: height * hRatio
+          })
+        }
+      })
+    })
+
     document.querySelector(".cancel").addEventListener("click", () => ipc.send("cancel"))
     document.querySelector("button").addEventListener("click", () => {
       const dataURL = cropper.getCroppedCanvas().toDataURL()

@@ -74,7 +74,7 @@
 }
 
 .edit img {
-  max-width: 100%;
+  max-width: calc(100% - 80px);
   max-height: calc(100vh - 140px);
   user-select: none;
   -webkit-user-drag: none;
