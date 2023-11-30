@@ -68,9 +68,10 @@ if (document.querySelector(".edit")) {
           const { width, height } = cropper.getCropBoxData()
           const wRatio = cropW / canvasW
           const hRatio = cropH / canvasH
+
           cropper.setCropBoxData({
-            left: x * wRatio, 
-            top: y * hRatio, 
+            left: x - ((width - cropW) / 2), 
+            top: y - ((height - cropH) / 2), 
             width: width * wRatio, 
             height: height * hRatio
           })
