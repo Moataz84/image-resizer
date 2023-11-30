@@ -11,13 +11,16 @@ if (document.querySelector(".image-upload")) {
     reader.readAsDataURL(file)
     reader.onload = e => {
       const dataURL = e.target.result
-      ipc.send("photo-selected", dataURL)
+      ipc.send("photo-selected", {dataURL, name: file.name})
     }
   })
 }
 
 if (document.querySelector(".edit")) {
-  const dataURL = new URLSearchParams(location.search).get("dataURL")
+  const params = new URLSearchParams(location.search)
+  const dataURL = params.get("dataURL")
+  const name = params.get("name")
+
   const img = document.querySelector("img")
   img.src = dataURL
 
@@ -48,7 +51,7 @@ if (document.querySelector(".edit")) {
         const context = canvas.getContext("2d")
         context.drawImage(image, 0, 0, canvas.width, canvas.height)
         const newImage = context.canvas.toDataURL("image/jpeg", 0.8)
-        ipc.send("save-image", {dataURL: newImage, name: })
+        ipc.send("save-image", {dataURL: newImage, name})
       }
     })
   }
