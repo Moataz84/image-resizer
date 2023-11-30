@@ -22,12 +22,6 @@ if (document.querySelector(".edit")) {
   img.src = dataURL
 
   img.onload = () => {
-    const width = parseFloat(window.getComputedStyle(img)["width"])
-    const height = parseFloat(window.getComputedStyle(img)["height"])
-    const ratio = img.naturalWidth / img.naturalHeight
-    if (ratio > 1) img.style.height = `${width / ratio}px`
-    if (ratio < 1) img.style.width = `${height * ratio}px`
-
     function cropmove() {
       const crop = cropper.getCropBoxData()
       cropW = crop.width
