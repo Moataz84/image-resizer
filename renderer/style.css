@@ -74,10 +74,8 @@
 }
 
 .edit img {
-  max-width: calc(100% - 80px);
+  max-width: calc(100%);
   max-height: calc(100vh - 140px);
-  user-select: none;
-  -webkit-user-drag: none;
 }
 
 .edit .btns {

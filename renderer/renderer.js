@@ -22,9 +22,15 @@ if (document.querySelector(".edit")) {
   img.src = dataURL
 
   img.onload = () => {
+    const width = parseFloat(window.getComputedStyle(img)["width"])
+    const height = parseFloat(window.getComputedStyle(img)["height"])
+    const ratio = img.naturalWidth / img.naturalHeight
+    if (ratio > 1) img.style.height = `${width / ratio}px`
+    if (ratio < 1) img.style.width = `${height * ratio}px`
+
     let cropW, cropH, canvasW, canvasH, x, y
     let cropper = new Cropper(img, {
-      viewMode: 2,
+      viewMode: 3,
       autoCropArea: 1,
       ready: () => {
         const crop = cropper.getCropBoxData()
@@ -41,14 +47,23 @@ if (document.querySelector(".edit")) {
         const crop = cropper.getCropBoxData()
         cropW = crop.width
         cropH = crop.height
+        x = crop.left
+        y = crop.top
       }
     })
 
     window.addEventListener("resize", () => {
       cropper.destroy()
       cropper = new Cropper(img, {
-        viewMode: 2,
+        viewMode: 3,
         autoCropArea: 1,
+        cropmove: () => {
+          const crop = cropper.getCropBoxData()
+          cropW = crop.width
+          cropH = crop.height
+          x = crop.left
+          y = crop.top
+        },
         ready: () => {
           const { width, height } = cropper.getCropBoxData()
           const wRatio = cropW / canvasW
