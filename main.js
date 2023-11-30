@@ -1,5 +1,6 @@
-const { app, BrowserWindow, Menu, ipcMain } = require("electron")
+const { app, BrowserWindow, Menu, ipcMain, dialog } = require("electron")
 const path = require("path")
+const fs = require("fs")
 
 const isWindows = process.platform !== "darwin"
 const isDev = true
@@ -89,4 +90,13 @@ ipcMain.on("photo-selected", (e, dataURL) => {
 
 ipcMain.on("cancel", () => {
   window.loadFile(path.join(__dirname, "./renderer/pages/index.html"))
+})
+
+ipcMain.on("save-image", async (e, dataURL) => {
+  const directory = await dialog.showOpenDialog(window, {
+    properties: ["openDirectory"]
+  })
+  if (directory.canceled) return
+  const buffer = Buffer.from(dataURL.split(",")[1], "base64")
+  fs.writeFileSync(`${directory.filePaths[0]}/file.jpg`, buffer)
 })
