@@ -94,7 +94,7 @@ ipcMain.on("cancel", () => {
 
 ipcMain.on("save-image", async (e, {dataURL, name}) => {
   const extensions = ["jpg", "jpeg", "png", "gif"]
-  name = name.split(".")[0]
+  name = path.parse(name).name
   const directory = await dialog.showSaveDialog({
     title: "Save Image",
     defaultPath: `${name}.jpg`,
